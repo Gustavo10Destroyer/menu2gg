@@ -18,7 +18,7 @@ function menu2gg.createMenu(title)
       local choice = gg.choice(_options, nil, self.title)
 
       if choice then
-        self.options[choice].handler(self.options[choice])
+        self.options[choice]:handler()
       else
         gg.setVisible(false)
 
