@@ -10,7 +10,9 @@ function menu2gg.createMenu(title)
       local _options = {}
 
       for _, option in pairs(self.options) do
-        table.insert(_options, option.text)
+        if not option.removed and option:isEnabled() then
+          table.insert(_options, option.text)
+        end
       end
 
       local choice = gg.choice(_options, nil, self.title)
@@ -32,15 +34,35 @@ function menu2gg.createMenu(title)
   function menu:createOption(text, handler)
     local option = {}
     option.text = text
+    option.enabled = true
+    option.removed = false
     option.handler = handler
     option.index = #self.options + 1
 
     table.insert(self.options, option)
 
-    function option:Delete()
-      self.Delete = nil
+    function option:edit(newText, newHandler)
+      self.text = type(newText) == "string" and newText or self.text
+      self.handler = type(newHandler) == "function" and newHandler or self.handler
+    end
+
+    function option:remove()
+      if self.removed then return end
+      self.removed = true
 
       table.remove(menu.options, self.index)
+    end
+
+    function option:enable()
+      self.enabled = true
+    end
+
+    function option:disable()
+      self.enabled = false
+    end
+
+    function option:isEnabled()
+      return self.enabled
     end
 
     return option
