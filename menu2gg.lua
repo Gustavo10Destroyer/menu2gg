@@ -1,55 +1,50 @@
 local menu2gg = {}
 
-function menu2gg.Menu(Title)
-  local Menu = {}
-  Menu.Title = Title
-  Menu.Options = {}
-  
-  function Menu:Show()
+function menu2gg.createMenu(title)
+  local menu = {}
+  menu.title = title
+  menu.options = {}
+
+  function menu:show()
     if gg.isVisible() then
-      local _Options = {}
-      
-      for _, Option in pairs(self.Options) do
-        table.insert(_Options, Option.Text)
+      local _options = {}
+
+      for _, option in pairs(self.options) do
+        table.insert(_options, option.text)
       end
-      
-      local choice = gg.choice(_Options, nil, self.Title)
-    
+
+      local choice = gg.choice(_options, nil, self.title)
+
       if choice then
-        self.Options[choice].Callback()
+        self.options[choice].handler()
       else
         gg.setVisible(false)
-        
+
         while not gg.isVisible() do
           gg.sleep(1)
         end
-        
-        self:Show()
+
+        self:show()
       end
     end
   end
-  
-  function Menu:AddOption(Option)
-    local Id = #self.Options + 1
-    
-    table.insert(self.Options, Option)
-    
-    function Option.Delete()
-      Option.Delete = nil
-      
-      table.remove(self.Options, Id)
+
+  function menu:createOption(text, handler)
+    local option = {}
+    option.text = text
+    option.handler = handler
+    option.index = #self.options + 1
+
+    table.insert(self.options, option)
+
+    function option:Delete()
+      self.Delete = nil
+
+      table.remove(menu.options, self.index)
     end
   end
-  
-  return Menu
-end
 
-function menu2gg.Option(Text, Callback)
-  local Option = {}
-  Option.Text = Text
-  Option.Callback = Callback
-  
-  return Option
+  return Menu
 end
 
 return menu2gg
