@@ -42,9 +42,11 @@ function menu2gg.createMenu(title)
 
       table.remove(menu.options, self.index)
     end
+
+    return option
   end
 
-  return Menu
+  return menu
 end
 
 return menu2gg
