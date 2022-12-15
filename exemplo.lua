@@ -4,7 +4,7 @@ local menu1 = M2GG.createMenu()
 local menu2 = M2GG.createMenu()
 
 menu1:createOption("Ir para Menu 2", function()
-  menu2:Show()
+  menu2:show()
 end)
 
 menu1:createOption("Sair", function()
@@ -12,11 +12,11 @@ menu1:createOption("Sair", function()
 end)
 
 menu2:createOption("Voltar para Menu 1", function()
-  menu1:Show()
+  menu1:show()
 end)
 
 menu2:createOption("Sair", function()
   os.exit()
 end)
 
-menu1:Show()
+menu1:show()
